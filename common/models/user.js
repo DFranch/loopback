@@ -178,7 +178,7 @@ module.exports = function(User) {
    * @param {AccessToken} token Access token if login is successful
    */
 
-  User.login = function(credentials, include, fn) {
+  User.login = function(credentials, include, ctx, fn) {
     var self = this;
     if (typeof include === 'function') {
       fn = include;
@@ -221,7 +221,7 @@ module.exports = function(User) {
       return fn.promise;
     }
 
-    self.findOne({where: query}, function(err, user) {
+    self.findOne({where: query}, {remoteCtx: ctx}, function(err, user) {
       var defaultError = new Error(g.f('login failed'));
       defaultError.statusCode = 401;
       defaultError.code = 'LOGIN_FAILED';
